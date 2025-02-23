@@ -7,8 +7,8 @@ class Game {
   constructor() {
     this.gameField = new GameField();
     this.path = new Path();
-    this.character = null;
     this.toolbar = new Toolbar(this);
+    this.character = null;
   }
 
   init() {
@@ -17,6 +17,7 @@ class Game {
     document.body.append(container);
 
     this.gameField.init();
+
     this.character = new Character(this.gameField.ctx, this.path);
     this.toolbar.init();
     this.updateCanvas();
