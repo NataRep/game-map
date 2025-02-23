@@ -1,6 +1,6 @@
-import App from './js/app.js';
+import Game from "./js/game.js";
 
-document.addEventListener('DOMContentLoaded', () => {
-    const app = new App();
-    app.init();
+document.addEventListener("DOMContentLoaded", () => {
+  const game = new Game();
+  game.init();
 });
