@@ -1,17 +1,25 @@
+import Slider from "../slider/slider.js";
+
 class Toolbar {
   constructor(game) {
     this.game = game;
     this.toolbar = null;
     this.buttons = [
-      { classList: ["btn", "btn_chat"], handler: null, text: "" },
+      { classList: ["btn", "btn_chat", "btn-icon"], handler: null, text: "" },
       {
         classList: ["btn", "btn_move"],
         handler: this.game.moveToNextPoint.bind(game),
         text: "В универ",
       },
-      { classList: ["btn", "btn_mail"], handler: null, text: "" },
-      { classList: ["btn", , "btn_rating"], handler: null, text: "" },
+      { classList: ["btn", "btn_mail", "btn-icon"], handler: null, text: "" },
+      {
+        classList: ["btn", , "btn_rating", "btn-icon"],
+        handler: null,
+        text: "",
+      },
     ];
+
+    this.slider = new Slider();
   }
 
   init() {
@@ -19,8 +27,8 @@ class Toolbar {
     const container = document.getElementById("game-container");
     this.toolbar.classList.add("toolbar");
     container.append(this.toolbar);
-    //this.createMainButton();
 
+    this.slider.init();
     this.createButtons();
   }
 
