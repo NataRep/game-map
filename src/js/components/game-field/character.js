@@ -13,15 +13,16 @@ class Character {
     this.height = 70;
     this.speed = 5;
     this.image = new Image();
-    this.image.src = "../src/images/character.png";
-
-    this.x = this.path[0].x;
-    this.y = this.path[0].y;
 
     this.image.onload = () => {
       this.draw();
       this.moveToNextPoint();
     };
+
+    this.image.src = "../src/images/character.png";
+
+    this.x = this.path[0].x;
+    this.y = this.path[0].y;
   }
 
   draw() {
