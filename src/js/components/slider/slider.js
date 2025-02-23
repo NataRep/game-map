@@ -17,6 +17,7 @@ class Slider {
     this.fillSlider();
     this.createBtns();
     this.addEventListeners();
+    this.updateButtons();
   }
 
   fillSlider() {
@@ -32,7 +33,7 @@ class Slider {
     }
 
     //генерация слайдов для демонстрации вращения слайдера
-    for (let i = 0; i < this.visibleSlides; i++) {
+    for (let i = 0; i < this.visibleSlides / 2; i++) {
       this.createSlide(null, withPlus);
     }
 
@@ -106,6 +107,16 @@ class Slider {
       Math.min(this.index + direction, this.slides.length - this.visibleSlides)
     );
     this.slideList.style.transform = `translateX(-${this.index * slideWidth}px)`;
+
+    this.updateButtons();
+  }
+
+  updateButtons() {
+    this.prevBtn.classList.toggle("disabled", this.index === 0);
+    this.nextBtn.classList.toggle(
+      "disabled",
+      this.index >= this.slides.length - this.visibleSlides
+    );
   }
 }
 
