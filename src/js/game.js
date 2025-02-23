@@ -2,6 +2,8 @@ import Path from "./components/game-field/path.js";
 import Character from "./components/game-field/character.js";
 import GameField from "./components/game-field/game-field.js";
 import Toolbar from "./components/tools-bar/toolsbar.js";
+import Rating from "./components/rating/rating.js";
+import { data } from "./data/data.js";
 
 class Game {
   constructor() {
@@ -9,6 +11,7 @@ class Game {
     this.path = new Path();
     this.toolbar = new Toolbar(this);
     this.character = null;
+    this.rating = new Rating(data.rating, data.friends);
   }
 
   init() {
@@ -21,6 +24,7 @@ class Game {
     this.character = new Character(this.gameField.ctx, this.path);
     this.toolbar.init();
     this.updateCanvas();
+    this.rating.init();
   }
 
   moveToNextPoint() {

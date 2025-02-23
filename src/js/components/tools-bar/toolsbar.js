@@ -14,7 +14,7 @@ class Toolbar {
       { classList: ["btn", "btn_mail", "btn-icon"], handler: null, text: "" },
       {
         classList: ["btn", , "btn_rating", "btn-icon"],
-        handler: null,
+        handler: () => this.game.rating.open(),
         text: "",
       },
     ];
