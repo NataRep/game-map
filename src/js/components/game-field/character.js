@@ -1,40 +1,69 @@
 class Character {
   constructor(ctx, path) {
+    // Сохраняем контекст и canvas
     this.ctx = ctx;
+    this.canvas = ctx.canvas;
+
+    // Инициализация пути движения
     this.path = path.points;
     this.currentPointIndex = 0;
-    this.isMoving = false;
 
+    // Настройка персонажа
+    this.width = 20;
+    this.height = 70;
+    this.speed = 5;
+    this.isMoving = false;
+    this.isLoaded = false;
+
+    // Инициализация позиции
     const startPoint = this.path[0];
     this.x = startPoint.x;
     this.y = startPoint.y;
 
-    this.width = 20;
-    this.height = 70;
-    this.speed = 5;
+    // Настройка изображения
     this.image = new Image();
-
-    this.image.onload = () => {
-      this.draw();
-      this.moveToNextPoint();
-    };
-
+    this.image.onload = this.handleImageLoad.bind(this);
+    this.image.onerror = this.handleImageError.bind(this);
     this.image.src = "../src/images/character.png";
 
-    this.x = this.path[0].x;
-    this.y = this.path[0].y;
+    // Управление анимацией
+    this.animationFrameId = null;
+    this.startAnimationLoop();
+  }
+
+  handleImageLoad() {
+    this.isLoaded = true;
+    this.draw();
+  }
+
+  handleImageError() {
+    console.error("Failed to load character image");
+    this.isLoaded = false;
+    this.draw();
+  }
+
+  startAnimationLoop() {
+    const animate = () => {
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+      this.draw();
+
+      this.animationFrameId = requestAnimationFrame(animate);
+    };
+    this.animationFrameId = requestAnimationFrame(animate);
+  }
+
+  stopAnimationLoop() {
+    if (this.animationFrameId) {
+      cancelAnimationFrame(this.animationFrameId);
+    }
   }
 
   draw() {
-    if (this.image.complete) {
-      this.ctx.drawImage(
-        this.image,
-        this.x - this.width / 2,
-        this.y - this.height,
-        this.width,
-        this.height
-      );
-    }
+    const drawX = this.x - this.width / 2;
+    const drawY = this.y - this.height;
+
+    this.ctx.drawImage(this.image, drawX, drawY, this.width, this.height);
   }
 
   moveToNextPoint() {
@@ -44,7 +73,7 @@ class Character {
     this.currentPointIndex++;
     const targetPoint = this.path[this.currentPointIndex];
 
-    const animate = () => {
+    const animateMove = () => {
       const dx = targetPoint.x - this.x;
       const dy = targetPoint.y - this.y;
       const distance = Math.sqrt(dx ** 2 + dy ** 2);
@@ -59,10 +88,16 @@ class Character {
       this.x += (dx / distance) * this.speed;
       this.y += (dy / distance) * this.speed;
 
-      requestAnimationFrame(animate);
+      requestAnimationFrame(animateMove);
     };
 
-    requestAnimationFrame(animate);
+    requestAnimationFrame(animateMove);
+  }
+
+  // Метод для безопасного удаления
+  destroy() {
+    this.stopAnimationLoop();
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 }
 
